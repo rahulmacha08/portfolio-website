@@ -837,6 +837,7 @@
         id: "apb-vip",
         tag: "Protocol VIP",
         title: "APB Protocol Slave VIP & Checker",
+        repoUrl:"https://github.com/rahulmacha08/UVM-APB-SLAVE-VERIFICATION-",
         desc: "Engineered a protocol compliance verification environment for AMBA APB3 peripherals. Formulated formal assertions verifying strict PENABLE sequencing, setup-to-access handshakes, and PSLVERR generation during unmapped address decodes.",
         chips: ["UVM 1.2", "SystemVerilog", "AMBA APB", "Formal Assertions", "QuestaSim"],
         svaCode: "// APB3 Protocol SVA Checker\nproperty p_apb_protocol_sequence;\n  @(posedge PCLK) disable iff(!PRESETn)\n  ($rose(PSEL) && !PENABLE) |=> (PSEL && PENABLE);\nendproperty\nassert_apb_timing: assert property(p_apb_protocol_sequence)\n  else $fatal(1, \"[APB_FATAL] PENABLE must assert 1 cycle after PSEL!\");",
@@ -847,6 +848,7 @@
         id: "eth-10g",
         tag: "High-Speed Core",
         title: "10G Ethernet MAC Verification",
+        repoUrl:"https://github.com/rahulmacha08/10GE-MAC-UVM-VERIFICATION",
         desc: "Constructed a comprehensive coverage-driven verification environment targeting a synthesized 10 Gigabit Ethernet MAC IP. Built UVM scoreboards with C-reference model integration, packet generators, and CRC32 corruptor sequences.",
         chips: ["UVM 1.2", "SystemVerilog", "XGMII", "CRC-32 Reference", "QuestaSim"],
         svaCode: "// 10G MAC XGMII Start of Frame Delimiter Assertion\nproperty p_mac_sfd_alignment;\n  @(posedge xgmii_clk) disable iff(rst)\n  (xgmii_rxc[0] && xgmii_rxd[7:0] == 8'hFB) |-> (xgmii_rxd[63:8] == 56'hD5555555555555);\nendproperty\nassert_mac_sfd: assert property(p_mac_sfd_alignment);",
@@ -1000,12 +1002,16 @@
               ${p.chips.map(c => `<span class="px-2 py-0.5 rounded bg-slate-950 border border-slate-800 text-slate-400">${c}</span>`).join("")}
             </div>
           </div>
-          <div class="pt-6 mt-6 border-t border-slate-800/80 flex items-center justify-between">
+         <div class="pt-6 mt-6 border-t border-slate-800/80 flex items-center justify-between">
             <button onclick="openModal('${p.id}')" class="text-xs font-mono text-cyan-400 hover:text-cyan-300 flex items-center gap-1.5 group-hover:underline">
               <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
               <span>Inspect Code & SVA</span>
             </button>
-            <svg class="w-3.5 h-3.5 text-slate-600 group-hover:text-cyan-400 transition" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            
+            <!-- Clickable Repo Link -->
+            <a href="${p.repoUrl}" target="_blank" rel="noreferrer" title="View Source Code" class="p-1.5 -mr-1.5 rounded-md text-slate-500 hover:text-cyan-400 hover:bg-slate-800/60 transition cursor-pointer">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </a>
           </div>
         `;
         container.appendChild(card);
